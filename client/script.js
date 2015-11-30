@@ -54,7 +54,7 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
       width: '465',
       videoId: 'M7lc1UVf-VE'
     });
-  }
+  };
 
   $scope.enqueue = function() {
     var resultsPath = this.songs.youTubeUrl.slice(22);
@@ -63,7 +63,13 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
     console.log('adding ' + artist + '\'s song: ' + songTitle); 
     queueServices.getArtistPhoto(artist) 
     .success(function(data) {
-      var artistImage = data.artist.image[1]['#text'];
+      var artistImage;
+      console.log(data.artist, "cory");
+      if (data.artist === undefined || data.artist.image[1]['#text'] === '') {
+        artistImage = 'images/default-album-artwork.png';
+      } else {
+        artistImage = data.artist.image[1]['#text'];
+      }
       queueServices.getSong(resultsPath)    
       .success(function(data) {
         console.log($scope.theBestVideo);
@@ -85,7 +91,7 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
     $scope.$apply(function() {
       queueServices.queue = newQueue;
       console.log('new queue length is ' + queueServices.queue.length);
-    })
+    });
   };
 
   $scope.playNext = function() {
