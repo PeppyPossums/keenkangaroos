@@ -28,7 +28,7 @@ angular.module('queue', [])
 
   var getArtistPhoto = function(artist) {
     var artist = artist.replace(' ', '+');
-    var server = 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' + artist + '&api_key=57ee3318536b23ee81d6b27e36997cde&format=json';
+    var server = 'https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=' + artist + '&api_key=57ee3318536b23ee81d6b27e36997cde&format=json';
     return $http.get(server);
   };
 
