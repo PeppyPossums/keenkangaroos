@@ -62,15 +62,31 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
     var songTitle = this.songs.songTitle;
     console.log('adding ' + artist + '\'s song: ' + songTitle); 
     queueServices.getArtistPhoto(artist) 
-    .success(function(data) {
-      var artistImage;
-      console.log(data.artist, "cory");
-      if (data.artist === undefined || data.artist.image[1]['#text'] === '') {
-        artistImage = 'images/default-album-artwork.png';
-      } else {
-        artistImage = data.artist.image[1]['#text'];
-      }
-      queueServices.getSong(resultsPath)    
+      .then(function(response) {
+        data = response.data;
+        var artistImage;
+        if (data.artist === undefined || data.artist.image[1]['#text'] === '') {
+          artistImage = 'images/default-album-artwork.png';
+        } else {
+          artistImage = data.artist.image[1]['#text'];
+        }
+        queueServices.getSong(resultsPath)    
+          .success(function(data) {
+            console.log($scope.theBestVideo);
+            console.log('youtubeLink: ' + data[0]);
+            var noVideoPlaying = $scope.theBestVideo === 'theBestVideo';
+            console.log('no video playing?: ' + noVideoPlaying);
+            var first = queueServices.addToQueue(artist, songTitle, null, data[0], noVideoPlaying, artistImage);
+            if (first) {
+              $scope.currentSong = first;
+              $scope.theBestVideo = data[0]+'?autoplay=1';
+              $scope.artistImage = artistImage;
+            }
+          });
+    }, function(data) {
+       console.log("error");
+       var artistImage = 'images/default-album-artwork.png';
+       queueServices.getSong(resultsPath)    
       .success(function(data) {
         console.log($scope.theBestVideo);
         console.log('youtubeLink: ' + data[0]);
