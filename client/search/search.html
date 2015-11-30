@@ -1,13 +1,15 @@
 <div>
  <form >
-   <input placeholder='Enter song or artist here' ng-model='userInput'>
-   <button ng-click='searchSong(userInput)'>Search</button>
-   <div ng-repeat="songs in searchResults" ng-click="enqueue()">
+   <input class="searchInput" placeholder='Enter song or artist here' ng-model='userInput'>
+   <button id="searchButton" ng-click='searchSong(userInput)'>Search</button>
+   <div >
+   <div class="searchSongs" ng-repeat="songs in searchResults" ng-click="enqueue()">
    	<span style='cursor:pointer'>
-   	 {{songs.songTitle}}
-   	 {{songs.year}}
+   	 <span class="searchYear"> {{songs.year}} </span>
+   	 <span class="searchArtist"> {{songs.songTitle}} </span>
  		</span>
    </div>
+ </div>
  </form>
 </div>
 

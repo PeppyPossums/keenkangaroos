@@ -141,19 +141,21 @@
       <div>
       <div class="showSongs">
           <div ng-repeat="songs in songs.list">
-            <span style='cursor:pointer' ng-click='enqueue()'>[{{$index + 1}}] {{songs.artist}}  -  {{songs.songTitle}}</span>
+            <span style='cursor:pointer' ng-click='enqueue()'> 
+              <span class="queueNumber"> {{$index + 1}} </span>
+              <span class="queueArtistTitleColor"> {{songs.artist}} </span>  -  {{songs.songTitle}}</span>
           </div>
       </div>
       <div class="viewsContainer">
         <div class="buttonBar">
-          <a href="#" class="btn btn-primary" ui-sref="queue" ng-click='showVideo=false'>Queue</a>
-          <button class="btn btn-primary"  ng-click='showVideo=true'>Video</button>
-          <button class="btn btn-primary"  ui-sref="search" ng-click='showVideo=false'>Search</button>
+          <button class="btn btn-primary nav" ui-sref="queue" ng-click='showVideo=false'>Queue</button>
+          <button class="btn btn-primary nav"  ng-click='showVideo=true'>Video</button>
+          <button class="btn btn-primary nav"  ui-sref="search" ng-click='showVideo=false'>Search</button>
         </div>
 
         <div ui-view ng-show='!showVideo'></div>
         <div ng-show='showVideo'>
-          <youtube-video id='player' player-vars='playerVars' video-id="theBestVideo" player-width="'100%'" player-height="'425px'"></youtube-video>
+          <youtube-video id='player' player-vars='playerVars' video-id="theBestVideo" player-width="'100%'" player-height="'405px'"></youtube-video>
         </div>
       </div>
       </div>
