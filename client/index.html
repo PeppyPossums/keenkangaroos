@@ -3,7 +3,6 @@
 
   <head>
     <title></title>
-    <!-- <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"/> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
     <link rel="stylesheet" href="style.css">
@@ -23,10 +22,7 @@
  <body ng-controller="MyController">
   <div id="container">
     <div id="header">
-      <!-- <img src="logo.png"> -->
     </div>
-    <!-- <hr/> -->
-
 
   <div id="menu" >
     <div class="dropdown">
@@ -137,28 +133,27 @@
         </ul>
       </div>
 </div> <!-- end of menu -->
-      <!-- <audio id="audplayer" src="" preload="auto" controls autoplay></audio> -->
       <div>
       <div class="showSongs">
           <div ng-repeat="songs in songs.list">
-            <span style='cursor:pointer' ng-click='enqueue()'>[{{$index + 1}}] {{songs.artist}}  -  {{songs.songTitle}}</span>
+            <span style='cursor:pointer' ng-click='enqueue()'> 
+              <span class="queueNumber"> {{$index + 1}} </span>
+              <span class="queueArtistTitleColor"> {{songs.artist}} </span>  -  {{songs.songTitle}}</span>
           </div>
       </div>
       <div class="viewsContainer">
         <div class="buttonBar">
-          <a href="#" class="btn btn-primary" ui-sref="queue" ng-click='showVideo=false'>Queue</a>
-          <button class="btn btn-primary"  ng-click='showVideo=true'>Video</button>
-          <button class="btn btn-primary"  ui-sref="search" ng-click='showVideo=false'>Search</button>
+          <button class="btn btn-primary nav" ui-sref="queue" ng-click='showVideo=false'>Queue</button>
+          <button class="btn btn-primary nav"  ng-click='showVideo=true'>Video</button>
+          <button class="btn btn-primary nav"  ui-sref="search" ng-click='showVideo=false'>Search</button>
         </div>
 
         <div ui-view ng-show='!showVideo'></div>
         <div ng-show='showVideo'>
-          <youtube-video id='player' player-vars='playerVars' video-id="theBestVideo" player-width="'100%'" player-height="'425px'"></youtube-video>
+          <youtube-video id='player' player-vars='playerVars' video-id="theBestVideo" player-width="'100%'" player-height="'405px'"></youtube-video>
         </div>
       </div>
       </div>
-
-
 
    </div> <!-- end of container -->
   </body>

@@ -1,5 +1,5 @@
 <div id="queueView">
-	<h2><span class="label label-default">Currently Playing</span></h2>
+	<h3><span class="label label-default">Currently Playing</span></h2>
   <p class="songContainer" style='cursor:pointer' ng-show="currentSong">
     <img ng-src={{artistImage}}></img>
     <span class="textContainer">
@@ -10,7 +10,7 @@
       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </button>
   </p>
-  <h2><span class="label label-default">Current Queue</span></h2>
+  <h3><span class="label label-default">Current Queue</span></h2>
   <div ng-repeat="track in queue">
     <p class="songContainer" style='cursor:pointer'>
       <img ng-src={{track.artistImage}}></img>
