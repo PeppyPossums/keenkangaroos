@@ -16,21 +16,22 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
     .state('queue', {
       url: '/queue',
       templateUrl: 'queue/queue.html'
-    })
+    });
 })
 
-.controller('MyController', ['$scope', '$http', '$firebaseArray', 'queueServices', function ($scope, $http, $firebaseArray, queueServices) {
+.controller('MyController', ['$scope', '$http', '$firebaseArray', 'queueServices', '$log', '$timeout', function ($scope, $http, $firebaseArray, queueServices, $log, $timeout) {
   $scope.decade;
   $scope.year;
   $scope.currentSong;
   $scope.queue = queueServices.queue;
-  $scope.theBestVideo = 'theBestVideo'
+  $scope.theBestVideo = 'theBestVideo';
   $scope.player;
   $scope.playerVars = {
     autoplay: 1
-  }
+  };
+
   $scope.$on('youtube.player.ready', function ($event, player) {
-    console.log('player is ready')
+    console.log('player is ready');
     player.playVideo();
   });
   $scope.$on('youtube.player.ended', function ($event, player) {
@@ -45,7 +46,7 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
       $scope.songs = {};
       $scope.songs.list = data;
       console.log('just loaded ' + data.length + ' items');
-    })
+    });
   });
 
   $scope.onYouTubeIframeAPIReady = function() {
@@ -59,54 +60,43 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
   $scope.enqueue = function() {
     var resultsPath = this.songs.youTubeUrl.slice(22);
     var artist = this.songs.artist;
-    var songTitle = this.songs.songTitle;
-    console.log('adding ' + artist + '\'s song: ' + songTitle); 
+    var songTitle = this.songs.songTitle; 
+    var artistImage = 'images/default-album-artwork.png';
+
     queueServices.getArtistPhoto(artist) 
-      .then(function(response) {
-        data = response.data;
-        var artistImage;
-        if (data.artist === undefined || data.artist.image[1]['#text'] === '') {
-          artistImage = 'images/default-album-artwork.png';
-        } else {
-          artistImage = data.artist.image[1]['#text'];
-        }
-        queueServices.getSong(resultsPath)    
-          .success(function(data) {
-            console.log($scope.theBestVideo);
-            console.log('youtubeLink: ' + data[0]);
-            var noVideoPlaying = $scope.theBestVideo === 'theBestVideo';
-            console.log('no video playing?: ' + noVideoPlaying);
-            var first = queueServices.addToQueue(artist, songTitle, null, data[0], noVideoPlaying, artistImage);
-            if (first) {
-              $scope.currentSong = first;
-              $scope.theBestVideo = data[0]+'?autoplay=1';
-              $scope.artistImage = artistImage;
-            }
-          });
-    }, function(data) {
-       console.log("error");
-       var artistImage = 'images/default-album-artwork.png';
-       queueServices.getSong(resultsPath)    
-      .success(function(data) {
-        console.log($scope.theBestVideo);
-        console.log('youtubeLink: ' + data[0]);
+    .then(function success(response) {
+      var data = response.data;
+      if (data.artist === undefined || data.artist.image[1]['#text'] === '') {
+        artistImage = 'images/default-album-artwork.png';
+      } else {
+        artistImage = data.artist.image[1]['#text'];
+      }
+      getSong();
+    }, 
+    function error(response) {
+      artistImage = 'images/default-album-artwork.png';
+      getSong();
+    });
+
+    function getSong() {
+      queueServices.getSong(resultsPath)    
+      .then(function success(response) {
+        var data = response.data;
         var noVideoPlaying = $scope.theBestVideo === 'theBestVideo';
-        console.log('no video playing?: ' + noVideoPlaying);
         var first = queueServices.addToQueue(artist, songTitle, null, data[0], noVideoPlaying, artistImage);
         if (first) {
           $scope.currentSong = first;
           $scope.theBestVideo = data[0]+'?autoplay=1';
           $scope.artistImage = artistImage;
         }
-      });
-    });
+      });    
+    }
   };
   
   $scope.dequeue = function() {
     var newQueue = queueServices.remove(this.track.songTitle);
     $scope.$apply(function() {
       queueServices.queue = newQueue;
-      console.log('new queue length is ' + queueServices.queue.length);
     });
   };
 
@@ -121,6 +111,7 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
       $scope.artistImage = next.artistImage;
     }
   };
+
 }])
 
 .directive('dropdown', function($document) {
