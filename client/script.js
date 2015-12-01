@@ -20,12 +20,8 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
 })
 
 .controller('MyController', ['$scope', '$http', '$firebaseArray', 'queueServices', '$log', '$timeout', function ($scope, $http, $firebaseArray, queueServices, $log, $timeout) {
-  $scope.decade;
-  $scope.year;
-  $scope.currentSong;
   $scope.queue = queueServices.queue;
   $scope.theBestVideo = 'theBestVideo';
-  $scope.player;
   $scope.playerVars = {
     autoplay: 1
   };
@@ -66,15 +62,12 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
     queueServices.getArtistPhoto(artist) 
     .then(function success(response) {
       var data = response.data;
-      if (data.artist === undefined || data.artist.image[1]['#text'] === '') {
-        artistImage = 'images/default-album-artwork.png';
-      } else {
+      if (!(data.artist === undefined || data.artist.image[1]['#text'] === '')) {
         artistImage = data.artist.image[1]['#text'];
       }
       getSong();
     }, 
     function error(response) {
-      artistImage = 'images/default-album-artwork.png';
       getSong();
     });
 
