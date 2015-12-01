@@ -19,7 +19,7 @@ angular.module('MyApp', ["firebase", "videoplayer", 'ui.router', 'search', 'queu
     });
 })
 
-.controller('MyController', ['$scope', '$http', '$firebaseArray', 'queueServices', '$log', '$timeout', function ($scope, $http, $firebaseArray, queueServices, $log, $timeout) {
+.controller('MyController', ['$scope', '$http', '$firebaseArray', 'queueServices', function ($scope, $http, $firebaseArray, queueServices) {
   $scope.queue = queueServices.queue;
   $scope.theBestVideo = 'theBestVideo';
   $scope.playerVars = {
